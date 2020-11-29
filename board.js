@@ -3,6 +3,8 @@ class Board {
     grid = [];
     tetromino;
     dropStart;
+    frames = 0;
+    speed = 36;
 
     onPieceLockedCallback;
     onRowClearedCallback;
@@ -44,7 +46,7 @@ class Board {
     startGame(shape, color) {
         this.tetromino = new Tetromino(shape, color);
         this.tetromino.drow();
-        this.dropStart = Date.now();
+        this.frames = 0
         this.drop();
     }
 
@@ -68,12 +70,9 @@ class Board {
     }
 
     drop(){
-        let now = Date.now();
-        this
-        // debugger;
-        let delta = now - this.dropStart;
-        if(delta > 1000) {
-            this.dropStart = Date.now();
+        this.frames++;
+        if(this.frames >= this.speed) {
+            this.frames = 0;
             this.moveTetrominoDown();
         }
         requestAnimationFrame(this.drop.bind(this))
@@ -82,7 +81,7 @@ class Board {
 
     moveTetrominoDown(){
         if(!this.collision(0, 1, this.tetromino.activeShape)){
-            this.dropStart = Date.now();
+            this.frames = 0;
             this.tetromino.moveDown();
         } else{
             this.lockTetromino();

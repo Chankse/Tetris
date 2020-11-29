@@ -1,4 +1,7 @@
 class InfoPanel {
+
+    onLevelChangeCallback;
+
     constructor(vacantColor) {
         this.width = 120;
         this.height = 400;
@@ -28,7 +31,11 @@ class InfoPanel {
 
     onRowClear(n) {
         this.lines += n;
-        this.level = Math.floor(this.lines/10);
+        let newLevel = Math.floor(this.lines/10);
+        if(newLevel > this.level){
+            this.level = newLevel;
+            this.onLevelChangeCallback(this.level);
+        }
         this.score += (this.level + 1) * POINTS_FOR_LINES[n-1];
 
         this.drow();

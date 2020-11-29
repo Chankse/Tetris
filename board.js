@@ -192,6 +192,17 @@ class Board {
         }
     }
 
+    updateSpeed(level){
+        if(level <= 19) {
+            this.speed = SPEED_PER_LEVEL[level];
+        } else {
+            this.speed = 1;
+        }
+        console.log(this.speed);
+    }
+
 
 
 }
+
+const SPEED_PER_LEVEL = [36, 32, 29, 25, 22, 18, 15, 11, 7, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1]

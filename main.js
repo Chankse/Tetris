@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 
 let board = new Board(20, 10, 30, '#80a3a2', ctx);
 let nextPieceBoard = new NextPiece(4, 4, 30,'#80a3a2' );
-let infoBoard = new InfoPanel('#80a3a2')
+let infoPanel = new InfoPanel('#80a3a2')
 
 
 
@@ -16,7 +16,11 @@ board.onPieceLockedCallback = () => {
 }
 
 board.onRowClearedCallback = (numRowsCleared) =>{
-    infoBoard.onRowClear(numRowsCleared);
+    infoPanel.onRowClear(numRowsCleared);
+}
+
+infoPanel.onLevelChangeCallback = (level) => {
+    board.updateSpeed(level);
 }
 
 

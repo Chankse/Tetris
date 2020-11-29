@@ -5,6 +5,7 @@ class Board {
     dropStart;
 
     onPieceLockedCallback;
+    onRowClearedCallback;
 
     constructor(row, col, squareSize, vacantColor) {
         this.row = row;
@@ -134,7 +135,7 @@ class Board {
     }
     
     clearFullRows() {
-        let clearHappened = false;
+        let numRowsCleared = 0;
         for(let i = 0; i < this.row; i++){
             let isFullRow = true;
             for(let j = 0; j< this.col; j++){
@@ -150,12 +151,14 @@ class Board {
                 for(let j = 0; j< this.col; j++){
                     this.grid[0][j] = this.vacantColor;
                 }
+
+                numRowsCleared++;
             }
-    
-            clearHappened = clearHappened || isFullRow;
+
         }
     
-        if(clearHappened){
+        if(numRowsCleared > 0){
+            this.onRowClearedCallback(numRowsCleared);
             this.drow()
         }
     }

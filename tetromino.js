@@ -1,5 +1,5 @@
 class Tetromino {
-    constructor(shape, color, xOffset) {
+    constructor(shape, color, xOffset, yOffset) {
         this.shape = shape;
         this.color = color;
 
@@ -9,6 +9,8 @@ class Tetromino {
         this.x = 0;
         this.y = 0;
         this.xOffset = xOffset? xOffset : 0;
+        this.yOffset = yOffset? yOffset : 0;
+
     }
 
     update(shape, color){
@@ -70,9 +72,9 @@ class Tetromino {
 
     drowSquare(x,y,color) {
         ctx.fillStyle = color? color : '#80a3a2';
-        ctx.fillRect(x*30 + this.xOffset, y*30, 30, 30);
+        ctx.fillRect(x*30 + this.xOffset, y*30 + this.yOffset, 30, 30);
         ctx.strokeStyle = 'black';
-        ctx.strokeRect(x*30 + this.xOffset, y*30, 30, 30);
+        ctx.strokeRect(x*30 + this.xOffset, y*30 + this.yOffset, 30, 30);
     }
 
 

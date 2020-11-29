@@ -3,13 +3,20 @@ const ctx = canvas.getContext('2d');
 
 
 let board = new Board(20, 10, 30, '#80a3a2', ctx);
-let nextPieceBoard = new NextPiece(4, 4, 30,'#80a3a2' )
+let nextPieceBoard = new NextPiece(4, 4, 30,'#80a3a2' );
+let infoBoard = new InfoPanel('#80a3a2')
+
+
 
 
 board.onPieceLockedCallback = () => {
     let piece = nextPieceBoard.getPiece();
     board.setTetromino(piece[0], piece[1]);
     nextPieceBoard.generateNextPiece();
+}
+
+board.onRowClearedCallback = (numRowsCleared) =>{
+    infoBoard.onRowClear(numRowsCleared);
 }
 
 

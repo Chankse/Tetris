@@ -2,6 +2,9 @@ class NextPiece {
     grid = [];
     tetromino;
     xOffset = 400;
+    yOffset = 30;
+    textHeight = 30;
+    
 
 
     constructor(row, col, squareSize, vacantColor) {
@@ -9,6 +12,10 @@ class NextPiece {
         this.col = col;
         this.squareSize = squareSize;
         this.vacantColor = vacantColor;
+
+        ctx.fillStyle = "#000000"
+        ctx.font = "28px Arial";
+        ctx.fillText("Next:",this.xOffset, this.yOffset - 10);
 
         for(let i = 0; i < this.row; i++){
             this.grid[i] = [];
@@ -20,7 +27,7 @@ class NextPiece {
         this.drow();
 
         let rand = Math.floor(Math.random() * PIECES.length);
-        this.tetromino = new Tetromino(PIECES[rand][0], PIECES[rand][1], this.xOffset);
+        this.tetromino = new Tetromino(PIECES[rand][0], PIECES[rand][1], this.xOffset, this.yOffset);
         this.tetromino.drow();
     }
 
@@ -34,9 +41,9 @@ class NextPiece {
 
     drowSquare(x,y,color) {
         ctx.fillStyle = color? color : '#80a3a2';
-        ctx.fillRect(x*this.squareSize + this.xOffset, y*this.squareSize, this.squareSize, this.squareSize);
+        ctx.fillRect(x*this.squareSize + this.xOffset, y*this.squareSize + this.yOffset, this.squareSize, this.squareSize);
         ctx.strokeStyle = 'black';
-        ctx.strokeRect(x*this.squareSize + this.xOffset, y*this.squareSize, this.squareSize, this.squareSize);
+        ctx.strokeRect(x*this.squareSize + this.xOffset, y*this.squareSize + this.yOffset, this.squareSize, this.squareSize);
     }
 
     generateNextPiece() {

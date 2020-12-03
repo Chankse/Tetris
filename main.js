@@ -26,7 +26,7 @@ infoPanel.onLevelChangeCallback = (level) => {
 
 ctx.fillStyle = '#000000';
 ctx.font = "20px Arial";
-let howToPlayTextPart1 = "Press ENTER to start/restart. Press SPACE to pause/resume"
+let howToPlayTextPart1 = "Press ENTER to start/restart. Press P to pause/resume"
 let howToPlayTextPart2 = "Use ARROW KEYS to navigate tetrominos"
 ctx.fillText(howToPlayTextPart1, 0, 625);
 ctx.fillText(howToPlayTextPart2, 0, 645);
@@ -34,37 +34,49 @@ ctx.fillText(howToPlayTextPart2, 0, 645);
 
 
 
-
-
 document.addEventListener('keydown', onKeyDown);
+document.addEventListener('keyup', onKeyUp);
 
 function onKeyDown(event) {
     let key = event.key != ' ' ? event.key : event.code;
     switch(key){
-        case 'ArrowLeft': 
-            board.moveTetrominoLeft();
+        case 'ArrowLeft':
+        case 'ArrowRight': 
+            board.onLeftRightKeyDown(key);
+            break;
+            case 'ArrowUp':
+                board.onRotateKeyDown();
+                break;
+            case 'ArrowDown':
+                board.onMoveDownKeyDown();
+                break;
+    }
+}
+
+function onKeyUp(event) {
+    let key = event.key != ' ' ? event.key : event.code;
+    switch(key){
+        case 'ArrowLeft':
+        case 'ArrowRight': 
+            board.onLeftRightKeyUp(key);
             break;
         case 'ArrowUp':
-            board.rotateTetromino();
-            break;
-        case 'ArrowRight': 
-            board.moveTetrominoRight();
+            board.onRotateKeyUp();
             break;
         case 'ArrowDown':
-            board.moveTetrominoDown();
+            board.onMoveDownKeyUp();
             break;
         case 'Enter':
             onEnterClick();
             break;
-        case 'Space':
-            onSpaceClick();
+         case 'p':
+            onPauseClick();
             break;
-
     }
 }
 
 onEnterClick = onStart;
-onSpaceClick = () => {};
+onPauseClick = () => {};
 
 function onStart(){
     gameStarted = true;
@@ -72,7 +84,7 @@ function onStart(){
     board.startGame(piece[0], piece[1]);
     nextPieceBoard.generateNextPiece();
     onEnterClick = onRestart;
-    onSpaceClick = onPause;
+    onPauseClick = onPause;
 }
 
 function onRestart(){

@@ -11,6 +11,13 @@ class Board {
 
     requestID;
 
+    keysLeftRight = [];
+    keyMoveDown = false;
+    keyRotate = false;
+    delayForKeysLeftRight = 0;
+    delayForKeyDown = 0;
+    delayForRotate = 0
+
     constructor(row, col, squareSize, vacantColor) {
         this.row = row;
         this.col = col;
@@ -77,7 +84,26 @@ class Board {
 
     drop(){
         this.frames++;
-        if(this.frames >= this.speed) {
+        this.delayForKeysLeftRight++;
+        this.delayForKeyDown++;
+        this.delayForRotate++;
+
+        if(this.delayForKeysLeftRight > 6 && this.keysLeftRight.length > 0){
+            this.delayForKeysLeftRight = 0;
+            this.keysLeftRight[this.keysLeftRight.length - 1] == 'ArrowLeft' ?  board.moveTetrominoLeft() : board.moveTetrominoRight();
+        }
+
+        if(this.delayForKeyDown > 3 && this.keyMoveDown){
+            this.delayForKeyDown = 0;
+            board.moveTetrominoDown();
+        }
+
+        if(this.delayForRotate > 12 && this.keyRotate){
+            this.delayForRotate = 0;
+            board.rotateTetromino();
+        }
+
+        if(this.frames >= this.speed ) {
             this.frames = 0;
             this.moveTetrominoDown();
         }
@@ -207,6 +233,45 @@ class Board {
         console.log(this.speed);
     }
 
+
+    onLeftRightKeyDown(key){
+        if(!this.keysLeftRight.includes(key)){
+            this.keysLeftRight.push(key);
+            this.delayForKeysLeftRight = 0;
+            key == 'ArrowLeft' ?  board.moveTetrominoLeft() : board.moveTetrominoRight();
+        }
+
+    }
+
+    onLeftRightKeyUp(key) {
+        let index = this.keysLeftRight.indexOf(key);
+        if(index > -1){
+            this.keysLeftRight.splice(index, 1)
+        }
+    }
+
+    onRotateKeyDown(){
+        if(!this.keyRotate) {
+            this.keyRotate = true;
+            this.delayForRotate = 0;
+            board.rotateTetromino()
+        }
+    }
+
+    onRotateKeyUp(){
+        this.keyRotate = false;
+    }
+
+    onMoveDownKeyDown() {
+        if(!this.keyMoveDown) {
+            this.keyMoveDown = true;
+            this.delayForKeyDown = 0;
+            board.moveTetrominoDown()
+        }
+    }
+    onMoveDownKeyUp(){
+        this.keyMoveDown = false;
+    }
 
 
 }

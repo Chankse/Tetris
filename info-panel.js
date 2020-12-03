@@ -16,6 +16,13 @@ class InfoPanel {
         this.drow();
     }
 
+    onRestart() {
+        this.level = 0;
+        this.lines = 0;
+        this.score = 0;
+        this.drow();
+    }
+
 
     drow(){
         ctx.fillStyle = this.vacantColor;

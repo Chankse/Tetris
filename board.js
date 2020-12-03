@@ -9,6 +9,8 @@ class Board {
     onPieceLockedCallback;
     onRowClearedCallback;
 
+    requestID;
+
     constructor(row, col, squareSize, vacantColor) {
         this.row = row;
         this.col = col;
@@ -64,6 +66,10 @@ class Board {
         this.tetromino.drow();
     }
 
+    pauseGame(pause){
+        pause? cancelAnimationFrame(this.requestID) : this.requestID = requestAnimationFrame(this.drop.bind(this));
+    }
+
     setTetromino(shape, color) {
         this.tetromino.update(shape, color);
         this.tetromino.drow();
@@ -75,7 +81,7 @@ class Board {
             this.frames = 0;
             this.moveTetrominoDown();
         }
-        requestAnimationFrame(this.drop.bind(this))
+        this.requestID = requestAnimationFrame(this.drop.bind(this));
 
     }
 

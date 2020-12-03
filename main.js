@@ -24,7 +24,12 @@ infoPanel.onLevelChangeCallback = (level) => {
 }
 
 
-
+ctx.fillStyle = '#000000';
+ctx.font = "20px Arial";
+let howToPlayTextPart1 = "Press ENTER to start/restart. Press SPACE to pause/resume"
+let howToPlayTextPart2 = "Use ARROW KEYS to navigate tetrominos"
+ctx.fillText(howToPlayTextPart1, 0, 625);
+ctx.fillText(howToPlayTextPart2, 0, 645);
 
 
 
@@ -34,41 +39,52 @@ infoPanel.onLevelChangeCallback = (level) => {
 document.addEventListener('keydown', onKeyDown);
 
 function onKeyDown(event) {
-    switch(event.keyCode){
-        case 37: 
+    let key = event.key != ' ' ? event.key : event.code;
+    switch(key){
+        case 'ArrowLeft': 
             board.moveTetrominoLeft();
             break;
-        case 38:
+        case 'ArrowUp':
             board.rotateTetromino();
             break;
-        case 39: 
+        case 'ArrowRight': 
             board.moveTetrominoRight();
             break;
-        case 40:
+        case 'ArrowDown':
             board.moveTetrominoDown();
+            break;
+        case 'Enter':
+            onEnterClick();
+            break;
+        case 'Space':
+            onSpaceClick();
             break;
 
     }
 }
 
+onEnterClick = onStart;
+onSpaceClick = () => {};
 
-let startBtn = document.getElementById('startBtn');
-startBtn.addEventListener('click', onStartBtnClick)
-
-let restartBtn = document.getElementById('restartBtn');
-restartBtn.addEventListener('click', onRestartBtnClick);
-
-function onStartBtnClick(){
-    startBtn.classList.add('d-none');
-    restartBtn.classList.remove('d-none');
-
+function onStart(){
+    gameStarted = true;
     let piece = nextPieceBoard.getPiece();
     board.startGame(piece[0], piece[1]);
     nextPieceBoard.generateNextPiece();
+    onEnterClick = onRestart;
+    onSpaceClick = onPause;
 }
 
-function onRestartBtnClick(){
+function onRestart(){
     let piece = nextPieceBoard.getPiece();
     board.restartGame(piece[0], piece[1]);
     nextPieceBoard.generateNextPiece();
+    infoPanel.onRestart();
+}
+
+let gamePaused = false;
+
+function onPause(){
+    gamePaused = !gamePaused;
+    board.pauseGame(gamePaused);
 }
